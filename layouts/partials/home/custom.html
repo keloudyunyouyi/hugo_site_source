@@ -31,9 +31,9 @@
           role="presentation"
           alt="Homepage background">
         
-        <!-- 双层渐变遮罩：优化文字可读性（区分深色/浅色模式） -->
-        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral to-transparent mix-blend-normal dark:from-neutral-800"></div>
-        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral to-neutral-100 opacity-60 mix-blend-normal dark:from-neutral-800 dark:to-neutral-800"></div>
+        <!-- 优化后的渐变遮罩：平衡清晰度与文字可读性 -->
+        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral/30 to-transparent mix-blend-normal dark:from-neutral-800"></div>
+        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral/15 to-neutral-100/5 opacity-40 mix-blend-normal dark:from-neutral-800/15 dark:to-neutral-800/20"></div>
       {{ end }}
     </div>
 
@@ -56,7 +56,7 @@
     <!-- 2. 个人资料区域（Profile）：居中展示头像、名称、简介及社交链接 -->
     <div class="relative mx-auto max-w-7xl p-4 sm:p-8">
       <div class="flex flex-col items-center justify-center text-center">
-        <!-- 头像（支持远程/本地图片，带尺寸优化） -->
+        <!-- 头像（调整透明度，增强视觉层次感） -->
         {{ with .Site.Params.Author.image }}
           {{ $authorImage := "" }}
           {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
@@ -69,7 +69,7 @@
               {{ $authorImage = $authorImage.Fill (print "288x288 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
             {{ end }}
             <img
-              class="mb-4 h-36 w-36 rounded-full shadow-md"
+              class="mb-4 h-36 w-36 rounded-full shadow-lg opacity-90 hover:opacity-100 transition-all duration-300"
               width="144"
               height="144"
               alt="{{ $.Site.Params.Author.name | default "Author" }}"

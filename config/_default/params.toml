@@ -46,7 +46,7 @@ cardView = true
 cardViewScreenWidth = true
 layoutBackgroundBlur = true
 disableHeroImageFilter = true
-homepageImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
+homepageImage = "img/homeback.png"
 
 [article]
 showDate = true
