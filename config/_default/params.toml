@@ -22,7 +22,7 @@ advertisement = { }
 highlightCurrentMenuArea = "Enable"
 defaultBackgroundImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
 disableImageZoom = false
-backgroundImageWidth = 1_200
+# backgroundImageWidth = 1_200
 defaultFeaturedImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
 mainSections = [ "blog", "CS" ]
 defaultContentLanguage = "zh-cn"
@@ -37,8 +37,8 @@ showAppearanceSwitcher = true
 showScrollToTop = true
 
 [homepage]
-layout = "background"
-showRecent = true
+layout = "custom"
+showRecent = false
 showRecentItems = 20
 showMoreLink = false
 showMoreLinkDest = "/blog/"

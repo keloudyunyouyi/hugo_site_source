@@ -1,0 +1,127 @@
+{{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
+<article class="prose dark:prose-invert max-w-full">
+  <!-- 1. 背景区域（Background）：包含背景图、渐变遮罩及模糊效果 -->
+  <div class="relative">
+    <!-- 背景图容器（固定定位，作为底层背景） -->
+    <div class="fixed inset-x-0 top-0 -z-10">
+      {{ $homepageImage := "" }}
+      <!-- 优先使用首页专属背景图，其次使用全局默认背景图 -->
+      {{ with .Site.Params.homepage.homepageImage }}
+        {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+          {{ $homepageImage = resources.GetRemote . }}
+        {{ else }}
+          {{ $homepageImage = resources.Get . }}
+        {{ end }}
+      {{ else }}
+        {{ with .Site.Params.defaultBackgroundImage }}
+          {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+            {{ $homepageImage = resources.GetRemote . }}
+          {{ else }}
+            {{ $homepageImage = resources.Get . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+
+      <!-- 背景图渲染（带防缩放、全屏覆盖） -->
+      {{ if $homepageImage }}
+        <img
+          id="background-image"
+          class="nozoom mt-0 mr-0 mb-0 ml-0 h-[1000px] w-full object-cover"
+          src="{{ $homepageImage.RelPermalink }}"
+          role="presentation"
+          alt="Homepage background">
+        
+        <!-- 双层渐变遮罩：优化文字可读性（区分深色/浅色模式） -->
+        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral to-transparent mix-blend-normal dark:from-neutral-800"></div>
+        <div class="absolute inset-0 h-[1000px] bg-gradient-to-t from-neutral to-neutral-100 opacity-60 mix-blend-normal dark:from-neutral-800 dark:to-neutral-800"></div>
+      {{ end }}
+    </div>
+
+    <!-- 背景模糊效果（按需加载，通过配置控制） -->
+    {{ if .Site.Params.homepage.layoutBackgroundBlur | default false }}
+      <div
+        id="background-blur"
+        class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl -z-10"></div>
+      {{ $backgroundBlurJS := resources.Get "js/background-blur.js" | resources.Minify | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+      <script
+        type="text/javascript"
+        src="{{ $backgroundBlurJS.RelPermalink }}"
+        integrity="{{ $backgroundBlurJS.Data.Integrity }}"
+        data-blur-id="background-blur"
+        data-image-id="background-image"
+        {{ if $homepageImage }}data-image-url="{{ $homepageImage.RelPermalink }}"{{ end }}></script>
+    {{ end }}
+
+
+    <!-- 2. 个人资料区域（Profile）：居中展示头像、名称、简介及社交链接 -->
+    <div class="relative mx-auto max-w-7xl p-4 sm:p-8">
+      <div class="flex flex-col items-center justify-center text-center">
+        <!-- 头像（支持远程/本地图片，带尺寸优化） -->
+        {{ with .Site.Params.Author.image }}
+          {{ $authorImage := "" }}
+          {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+            {{ $authorImage = resources.GetRemote . }}
+          {{ else }}
+            {{ $authorImage = resources.Get . }}
+          {{ end }}
+          {{ if $authorImage }}
+            {{ if not $disableImageOptimization }}
+              {{ $authorImage = $authorImage.Fill (print "288x288 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
+            {{ end }}
+            <img
+              class="mb-4 h-36 w-36 rounded-full shadow-md"
+              width="144"
+              height="144"
+              alt="{{ $.Site.Params.Author.name | default "Author" }}"
+              src="{{ $authorImage.RelPermalink }}">
+          {{ end }}
+        {{ end }}
+
+        <!-- 姓名（优先显示作者名，其次显示站点标题） -->
+        <h1 class="mb-2 text-4xl sm:text-5xl font-extrabold text-neutral-800 dark:text-neutral-200">
+          {{ .Site.Params.Author.name | default .Site.Title }}
+        </h1>
+
+        <!-- 个人简介（副标题） -->
+        {{ with .Site.Params.Author.headline }}
+          <h2 class="mt-0 mb-6 text-xl sm:text-2xl text-neutral-600 dark:text-neutral-300">
+            {{ . | markdownify }}
+          </h2>
+        {{ end }}
+
+        <!-- 社交链接（支持多平台，带hover效果） -->
+        <div class="mt-2 mb-8 text-2xl">
+          {{ if .Site.Params.Author.links }}
+            <div class="flex flex-wrap justify-center gap-4">
+              {{ range $linksGroup := .Site.Params.Author.links }}
+                {{ range $platform, $url := $linksGroup }}
+                  <a
+                    class="hover:text-primary-500 transition-colors text-neutral-700 dark:text-neutral-300"
+                    href="{{ $url }}"
+                    target="_blank"
+                    aria-label="{{ $platform | title }} profile"
+                    rel="me noopener noreferrer">
+                    {{ partial "icon.html" $platform }} <!-- 调用图标组件（需确保icon.html存在） -->
+                  </a>
+                {{ end }}
+              {{ end }}
+            </div>
+          {{ else }}
+            <!-- 备用：使用缓存的作者链接组件（兼容原模板逻辑） -->
+            {{ partialCached "author-links.html" . }}
+          {{ end }}
+        </div>
+
+        <!-- 个人详情内容（支持Markdown格式，如个人介绍、技能等） -->
+        <section class="prose dark:prose-invert max-w-2xl w-full mb-10">
+          {{ .Content }}
+        </section>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- 可选：近期文章列表（保留原模板逻辑，按需启用） -->
+<section class="mx-auto max-w-7xl p-4 sm:p-8">
+  {{ partial "recent-articles/main.html" . }}
+</section>
