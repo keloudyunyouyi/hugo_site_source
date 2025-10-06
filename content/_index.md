@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (isDeleting && charIndex === 0) {
       isDeleting = false;
       textIndex++;
-      typeSpeed = 1000; // 切换到下一句前停留0.5秒
+      typeSpeed = 1000; // 切换到下一句前停留1秒
     }
     
     setTimeout(typeEffect, typeSpeed);
@@ -61,19 +61,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
 .typewriter-container {
-  padding: 2rem;
+  padding: 1rem 1rem; /* 移动端减少左右内边距 */
   text-align: center;
+  max-width: 100%; /* 适应Hugo容器宽度 */
+  box-sizing: border-box; /* 确保内边距不影响整体宽度 */
 }
 
 #typewriter-text {
-  font-size: 2rem;
+  /* 响应式字号 - 在不同屏幕尺寸下自动调整 */
+  font-size: clamp(1rem, 5vw, 2rem);
   font-weight: bold;
-  border-right: 3px solid;
+  border-right: clamp(2px, 0.5vw, 3px) solid; /* 响应式光标宽度 */
   white-space: nowrap;
   overflow: hidden;
-  display: inline-block; /* 关键：使元素宽度适应内容 */
-  vertical-align: middle; /* 确保光标垂直居中 */
-  min-height: 1.2em; /* 防止高度闪烁 */
+  display: inline-block;
+  vertical-align: middle;
+  min-height: 1.2em;
   animation: cursor-blink 0.7s step-end infinite;
 }
 
@@ -81,7 +84,21 @@ document.addEventListener('DOMContentLoaded', function() {
   from, to { border-color: transparent }
   50% { border-color: currentColor }
 }
+
+/* 小屏设备适配 */
+@media (max-width: 480px) {
+  .typewriter-container {
+    padding: 1.5rem 0.5rem;
+  }
+  
+  /* 极端情况下允许文字换行 */
+  @media (max-width: 320px) {
+    #typewriter-text {
+      white-space: normal;
+      border-right: none;
+    }
+  }
+}
 </style>
-</body></html>
 
 {{< list title="最近"limit=9 cardView=true >}}
