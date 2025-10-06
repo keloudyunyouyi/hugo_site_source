@@ -1,0 +1,29 @@
+[[main]]
+  name = "笔记"
+  weight = 20
+  pre = "list"
+
+[[main]]
+  name = "CS"
+  parent = "笔记"
+  pageRef = "CS"
+  weight = 20
+
+[[main]]
+  name = "blog"
+  pageRef = "blog"
+  pre = "pencil"
+  weight = 20
+
+[[main]]
+  name = "开发"
+  parent = "笔记"
+  pageRef = "开发"
+  weight = 20
+
+# config/_default/menus.toml
+
+[[footer]]
+   name = "标签"
+   pageRef = "tags"
+   weight = 10

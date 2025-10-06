@@ -1,0 +1,115 @@
+colorScheme = "avocado"
+defaultAppearance = "light"
+autoSwitchAppearance = true
+enableA11y = false
+enableSearch = true
+enableCodeCopy = true
+replyByEmail = false
+disableImageOptimization = false
+disableImageOptimizationMD = false
+disableTextInHeader = false
+fingerprintAlgorithm = "sha512"
+giteaDefaultServer = "https://git.fsfe.org"
+forgejoDefaultServer = "https://v11.next.forgejo.org"
+firebase = { }
+fathomAnalytics = { }
+umamiAnalytics = { }
+selineAnalytics = { }
+buymeacoffee = { }
+verification = { }
+rssnext = { }
+advertisement = { }
+highlightCurrentMenuArea = "Enable"
+defaultBackgroundImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
+disableImageZoom = false
+backgroundImageWidth = 1_200
+defaultFeaturedImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
+mainSections = [ "blog", "CS" ]
+defaultContentLanguage = "zh-cn"
+[header]
+layout = "fixed"
+
+[footer]
+showMenu = true
+showCopyright = true
+showThemeAttribution = true
+showAppearanceSwitcher = true
+showScrollToTop = true
+
+[homepage]
+layout = "background"
+showRecent = true
+showRecentItems = 20
+showMoreLink = false
+showMoreLinkDest = "/blog/"
+cardView = true
+cardViewScreenWidth = true
+layoutBackgroundBlur = true
+disableHeroImageFilter = true
+homepageImage = "https://pbs.twimg.com/media/Gx6Hrc4bkAAzbqt?format=jpg&name=4096x4096"
+
+[article]
+showDate = true
+showViews = false
+showLikes = false
+showDateOnlyInArticle = false
+showDateUpdated = false
+showAuthor = true
+showHero = true
+layoutBackgroundBlur = true
+layoutBackgroundHeaderSpace = true
+showBreadcrumbs = false
+showDraftLabel = true
+showEdit = false
+editAppendPath = true
+seriesOpened = true
+showHeadingAnchors = true
+showPagination = true
+invertPagination = ""
+showReadingTime = true
+showTableOfContents = true
+showTaxonomies = false
+showCategoryOnly = false
+showAuthorsBadges = false
+showWordCount = true
+showZenMode = true
+heroStyle = "background"
+
+[list]
+showHero = true
+layoutBackgroundBlur = true
+layoutBackgroundHeaderSpace = true
+showBreadcrumbs = false
+showSummary = false
+showViews = false
+showLikes = false
+showTableOfContents = false
+showCards = true
+orderByWeight = false
+groupByYear = true
+cardView = true
+cardViewScreenWidth = false
+constrainItemsWidth = true
+heroStyle = "background"
+
+[sitemap]
+excludedKinds = [ "taxonomy", "term" ]
+
+[taxonomy]
+showTermCount = true
+showHero = false
+showBreadcrumbs = false
+showViews = false
+showLikes = false
+showTableOfContents = false
+cardView = false
+
+[term]
+showHero = false
+showBreadcrumbs = false
+showViews = false
+showLikes = false
+showTableOfContents = true
+groupByYear = false
+cardView = false
+cardViewScreenWidth = false
