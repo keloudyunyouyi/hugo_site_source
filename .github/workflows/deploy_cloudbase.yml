@@ -1,0 +1,41 @@
+name: Deploy to CloudBase Static Hosting
+on:
+  push:
+    branches:
+      - main  # 主分支推送时触发
+  pull_request:
+    branches:
+      - main  # PR时触发（可选，可删除）
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'  # 拉取主题子模块
+
+      - name: Install Hugo v0.150.0 extended
+        run: |
+          wget -qO- https://github.com/gohugoio/hugo/releases/download/v0.150.0/hugo_extended_0.150.0_Linux-64bit.tar.gz | tar -xz -C /tmp
+          sudo mv /tmp/hugo /usr/local/bin/
+          hugo version
+
+      - name: Build Hugo project
+        run: hugo --minify  # 生成静态文件到public目录
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # 官网示例使用的Node版本
+
+      - name: Install CloudBase CLI
+        run: npm install -g @cloudbase/cli
+
+      - name: Login CloudBase CLI
+        run: tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+
+      - name: Deploy to CloudBase Static Hosting
+        run: tcb hosting deploy ./public / -e ${{ secrets.TCB_ENV_ID }}
